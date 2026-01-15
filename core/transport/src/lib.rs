@@ -77,8 +77,8 @@ pub async fn start_webrtc() -> anyhow::Result<WebRTCConnection> {
     let pc_arc = Arc::new(peer_connection);
 
     // Create data channel
-    let data_channel = pc_arc.create_data_channel("control", Some(RTCDataChannelInit::default())).await?;
-    let dc_arc = Arc::clone(&data_channel);
+    // Note: create_data_channel already returns Arc<RTCDataChannel>
+    let dc_arc = pc_arc.create_data_channel("control", Some(RTCDataChannelInit::default())).await?;
 
     // Set up on_open handler
     dc_arc.on_open(Box::new(|| {
